@@ -1,15 +1,24 @@
+import os
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import from_json, col
 from pyspark.sql.types import StructType, StructField, IntegerType, StringType, DoubleType, TimestampType
 
-# --- 1. SNOWFLAKE CREDENTIALS  ---
-SF_OPTIONS = {
-    "sfUrl": "https://tttqkkn-qb32757.snowflakecomputing.com",
-    "sfUser": "GOWTHAM1105",                                
-    "sfPassword": "Geethasuneeta74@",                            # <--- REPLACE THIS
-    "sfDatabase": "ecommerce_db",
-    "sfSchema": "raw_data",
-    "sfWarehouse": "compute_wh"
+# READ CREDENTIALS FROM ENVIRONMENT
+sf_user = os.getenv("SNOWFLAKE_USER")
+sf_password = os.getenv("SNOWFLAKE_PASSWORD")
+sf_account = os.getenv("SNOWFLAKE_ACCOUNT")
+
+# Verify they exist (Debugging safety)
+if not all([sf_user, sf_password, sf_account]):
+    raise ValueError("Missing Snowflake Credentials in Environment Variables!")
+
+snowflake_options = {
+    "sfUrl": f"{sf_account}.snowflakecomputing.com",
+    "sfUser": sf_user,
+    "sfPassword": sf_password,
+    "sfDatabase": "ECOMMERCE_DB",
+    "sfSchema": "RAW_DATA",
+    "sfWarehouse": "COMPUTE_WH"
 }
 
 def process_stream():

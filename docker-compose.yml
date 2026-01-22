@@ -44,6 +44,8 @@ services:
   spark-master:
     image: public.ecr.aws/bitnami/spark:3.5
     container_name: spark-master
+    env_file:
+      - .env
     environment:
       - SPARK_MODE=master
       - SPARK_DAEMON_MEMORY=512m
@@ -58,6 +60,8 @@ services:
     container_name: spark-worker
     depends_on:
       - spark-master
+    env_file:
+      - .env
     environment:
       - SPARK_MODE=worker
       - SPARK_MASTER_URL=spark://spark-master:7077
