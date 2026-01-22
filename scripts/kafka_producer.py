@@ -6,7 +6,7 @@ from decimal import Decimal
 
 # --- Configuration ---
 KAFKA_TOPIC = "order_created"
-KAFKA_BOOTSTRAP_SERVERS = "localhost:9092"
+KAFKA_BOOTSTRAP_SERVERS = "localhost:9094"
 
 # Database config
 db_config = {
