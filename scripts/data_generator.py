@@ -19,28 +19,28 @@ def get_db_connection():
         conn = mysql.connector.connect(
             host="mysql",
             user="root",
-            password="root",
+            password="rootpassword",
             database="ecommerce_db",
             port=3306
         )
-        print("✅ Connected via Docker Network (mysql:3306)")
+        print(" Connected via Docker Network (mysql:3306)")
         return conn
     except Exception as e:
-        print(f"⚠️  Docker connection failed ({e}). Trying localhost...")
+        print(f"  Docker connection failed ({e}). Trying localhost...")
 
     # ATTEMPT 2: Localhost (VS Code)
     try:
         conn = mysql.connector.connect(
             host="localhost",
             user="root",
-            password="root",
+            password="rootpassword",
             database="ecommerce_db",
             port=3307
         )
-        print("✅ Connected via Localhost (localhost:3307)")
+        print("Connected via Localhost (localhost:3307)")
         return conn
     except Exception as e:
-        print(f"❌ FAILED to connect to DB: {e}")
+        print(f"FAILED to connect to DB: {e}")
         return None
 
 def generate_users(n=25):
@@ -75,7 +75,7 @@ def generate_products():
 
     products = [
         ('Laptop', 'Electronics', 50000.00),
-        ('Mouse', 'Electronics', 2500.50),
+        ('Mouse', 'Electronics', 2500.00),
         ('Keyboard', 'Electronics', 4500.00),
         ('Headphones', 'Electronics', 2000.00),
         ('T-Shirt', 'Clothing', 1500.00),
@@ -140,7 +140,7 @@ def generate_orders(n=500):
     conn.commit()
     cursor.close()
     conn.close()
-    print(f"✅ {n} Orders generated successfully!")
+    print(f" {n} Orders generated successfully!")
 
 if __name__ == "__main__":
     # We always run the checks to make sure the DB is ready

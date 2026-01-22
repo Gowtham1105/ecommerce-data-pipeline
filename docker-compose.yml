@@ -8,8 +8,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: ecommerce_db
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root 
     ports:
       - "3307:3306" # Maps localhost:3307 to container:3306 (avoids conflict with local mysql)
     volumes:
@@ -68,29 +68,29 @@ services:
 
   # 4. THE ORCHESTRATOR (Airflow)
   # Note: Airflow requires a lot of setup. For now, we will use the 'standalone' mode for simplicity.
-  airflow:
-    image: apache/airflow:2.7.1
-    container_name: airflow
-    environment:
-      - AIRFLOW__CORE__LOAD_EXAMPLES=False
-      - AIRFLOW__CORE__EXECUTOR=SequentialExecutor
-      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=sqlite:////opt/airflow/airflow.db
-      - _AIRFLOW_DB_UPGRADE=true
-      - _AIRFLOW_WWW_USER_CREATE=true
-      - _AIRFLOW_WWW_USER_USERNAME=admin
-      - _AIRFLOW_WWW_USER_PASSWORD=admin
-    ports:
-      - "8181:8080"
-    volumes:
-      - ./dags:/opt/airflow/dags
-      - ./scripts:/opt/airflow/scripts
-      - ./requirements.txt:/opt/airflow/requirements.txt
-    command: bash -c "pip install -r requirements.txt && airflow standalone"
-    healthcheck:
-      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
+  # airflow:
+  #   image: apache/airflow:2.7.1
+  #   container_name: airflow
+  #   environment:
+  #     - AIRFLOW__CORE__LOAD_EXAMPLES=False
+  #     - AIRFLOW__CORE__EXECUTOR=SequentialExecutor
+  #     - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=sqlite:////opt/airflow/airflow.db
+  #     - _AIRFLOW_DB_UPGRADE=true
+  #     - _AIRFLOW_WWW_USER_CREATE=true
+  #     - _AIRFLOW_WWW_USER_USERNAME=admin
+  #     - _AIRFLOW_WWW_USER_PASSWORD=admin
+  #   ports:
+  #     - "8181:8080"
+  #   volumes:
+  #     - ./dags:/opt/airflow/dags
+  #     - ./scripts:/opt/airflow/scripts
+  #     - ./requirements.txt:/opt/airflow/requirements.txt
+  #   command: bash -c "pip install -r requirements.txt && airflow standalone"
+  #   healthcheck:
+  #     test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 5
 
 
 volumes:
