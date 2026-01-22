@@ -46,6 +46,7 @@ services:
     container_name: spark-master
     environment:
       - SPARK_MODE=master
+      - SPARK_DAEMON_MEMORY=512m
     ports:
       - "8080:8080" # Spark Web UI
       - "7077:7077"
@@ -60,6 +61,8 @@ services:
     environment:
       - SPARK_MODE=worker
       - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_WORKER_MEMORY=512m  
+      - SPARK_WORKER_CORES=1
     volumes:
       - ./spark_jobs:/opt/bitnami/spark/jobs
 
@@ -69,26 +72,26 @@ services:
     image: apache/airflow:2.7.1
     container_name: airflow
     environment:
-      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
-      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres/airflow
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
+      - AIRFLOW__CORE__EXECUTOR=SequentialExecutor
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=sqlite:////opt/airflow/airflow.db
+      - _AIRFLOW_DB_UPGRADE=true
+      - _AIRFLOW_WWW_USER_CREATE=true
+      - _AIRFLOW_WWW_USER_USERNAME=admin
+      - _AIRFLOW_WWW_USER_PASSWORD=admin
+    ports:
+      - "8181:8080"
     volumes:
       - ./dags:/opt/airflow/dags
-      - ./logs:/opt/airflow/logs
-      - ./plugins:/opt/airflow/plugins
-    ports:
-      - "8081:8080" # Airflow UI on port 8081
-    depends_on:
-      - postgres
-    command: airflow standalone
+      - ./scripts:/opt/airflow/scripts
+      - ./requirements.txt:/opt/airflow/requirements.txt
+    command: bash -c "pip install -r requirements.txt && airflow standalone"
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
-  postgres:
-    image: postgres:13
-    container_name: airflow_postgres
-    environment:
-      - POSTGRES_USER=airflow
-      - POSTGRES_PASSWORD=airflow
-      - POSTGRES_DB=airflow
 
 volumes:
   mysql_data:
