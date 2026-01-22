@@ -47,6 +47,8 @@ services:
     ports:
       - "8080:8080" # Spark Web UI
       - "7077:7077"
+    volumes:
+      - ./spark_jobs:/opt/bitnami/spark/jobs
 
   spark-worker:
     image: public.ecr.aws/bitnami/spark:3.5
@@ -56,6 +58,8 @@ services:
     environment:
       - SPARK_MODE=worker
       - SPARK_MASTER_URL=spark://spark-master:7077
+    volumes:
+      - ./spark_jobs:/opt/bitnami/spark/jobs
 
   # 4. THE ORCHESTRATOR (Airflow)
   # Note: Airflow requires a lot of setup. For now, we will use the 'standalone' mode for simplicity.

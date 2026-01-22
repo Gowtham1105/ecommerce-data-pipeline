@@ -1,2 +1,4 @@
 Faker
 mysql-connector-python
+kafka-python
+pyspark
