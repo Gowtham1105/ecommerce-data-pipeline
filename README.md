@@ -71,7 +71,7 @@ The project relies on environment variables for secure credential management.
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/your-username/ecommerce-pipeline.git](https://github.com/your-username/ecommerce-pipeline.git)
+    git clone https://github.com/gowtham1105/ecommerce-pipeline.git
     cd ecommerce-pipeline
     ```
 
@@ -184,3 +184,4 @@ Post-ingestion analytics are executed directly within the Snowflake Data Warehou
 ## License
 
 This project is open-source and licensed under the MIT License.
+
