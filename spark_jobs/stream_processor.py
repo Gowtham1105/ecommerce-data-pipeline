@@ -60,7 +60,7 @@ def process_stream():
             print(f"Writing batch {batch_id} with {batch_df.count()} records to Snowflake...")
             batch_df.write \
                 .format("snowflake") \
-                .options(**SF_OPTIONS) \
+                .options(**snowflake_options) \
                 .option("dbtable", "orders") \
                 .mode("append") \
                 .save()
